@@ -1,0 +1,22 @@
+apiVersion: kpt.dev/v1
+kind: Kptfile
+metadata: # kpt-merge: /configuration-ip-api
+  name: configuration-ip-api
+  annotations:
+    config.kubernetes.io/local-config: "true"
+    internal.kpt.dev/upstream-identifier: 'kpt.dev|Kptfile|default|configuration-ip-api'
+upstream:
+  type: git
+  git:
+    repo: https://github.com/infinitydon/nephio-aws-packages.git
+    directory: configuration-ip-api-package
+    ref: r3-argocd
+upstreamLock:
+  type: git
+  git:
+    repo: https://github.com/infinitydon/nephio-aws-packages.git
+    directory: configuration-ip-api-package
+    ref: r3-argocd
+    commit: 72d1b18e3898e2333e402e034cab417f24f33735
+info:
+  description: this package is used to create the EKS terraform FLuxcD GitRepo Resource
