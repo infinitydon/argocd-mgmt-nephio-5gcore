@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata: # kpt-merge: porch-system/configmap-api-service
+  name: configmap-api-service
+  namespace: porch-system
+  annotations:
+    internal.kpt.dev/upstream-identifier: '|Service|porch-system|configmap-api-service'
+spec:
+  ports:
+  - port: 80
+    targetPort: 5000
+  selector:
+    app: configmap-api
+  type: ClusterIP
