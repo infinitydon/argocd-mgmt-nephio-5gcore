@@ -21,3 +21,31 @@ upstreamLock:
     commit: f03897787ca65a4980df9baa24843459b302584a
 info:
   description: this package is used to deploy workload cluster via FluxCD TF controller
+pipeline:
+  mutators:
+  - name: PackageVariant.userplane-eks-cluster..0
+    image: gcr.io/kpt-fn/search-replace:v0.2.0
+    configMap:
+      by-value: IRSA_ARN
+      put-value: arn:aws:iam::989405826384:role/mgmt-argocd-terraform-runner
+    selectors:
+    - kind: Terraform
+  - name: PackageVariant.userplane-eks-cluster..1
+    image: gcr.io/kpt-fn/apply-setters:v0.2.0
+    configMap:
+      aws-region: us-west-2
+      eks-cluster-name: userplane
+      eks-version: '"1.31"'
+      free5gc-kernel: enable
+      instance-type: m5.4xlarge
+      parameter-store-name: user-plane-5g
+      tf-backend-config: |-
+        terraform {
+          backend "kubernetes" {
+            secret_suffix    = "userplane-cluster"
+            in_cluster_config  = true
+            namespace = "tf-system"
+          }
+        }
+      tf-cluster-name: userplane-cluster
+      tf-secret-output-name: userplane-cluster-tf-output
