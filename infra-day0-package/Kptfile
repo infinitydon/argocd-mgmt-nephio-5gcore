@@ -20,3 +20,26 @@ upstreamLock:
     commit: c38d28fe69583a437c6386bf8a8ad847b401f973
 info:
   description: this package is used to create the EKS terraform FLuxcD GitRepo Resource
+pipeline:
+  mutators:
+  - name: PackageVariant.day0-infra..0
+    image: gcr.io/kpt-fn/apply-setters:v0.2.0
+    configMap:
+      deployment-region: us-west-2
+      github-org: infinitydon
+      github-pat-secret-name: github-pat-credentials
+      github-repos: '["argo-telco-ran-5g", "argo-telco-control-plane-5g", "argo-telco-user-plane-5g"]'
+      multus-lambda-s3-bucket: multus-lambda-us-west-2-oregon-2024-argo
+      workload-core-controlplane-az1: us-west-2a
+      workload-core-controlplane-az2: us-west-2b
+      workload-core-userplane-az1: us-west-2a
+      workload-core-userplane-az2: us-west-2b
+      workload-ran-az1: us-west-2a
+      workload-ran-az2: us-west-2b
+  - name: PackageVariant.day0-infra..1
+    image: gcr.io/kpt-fn/search-replace:v0.2.0
+    configMap:
+      by-value: IRSA_ARN
+      put-value: arn:aws:iam::989405826384:role/mgmt-argocd-terraform-runner
+    selectors:
+    - kind: Terraform
