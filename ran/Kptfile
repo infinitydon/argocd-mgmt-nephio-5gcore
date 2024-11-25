@@ -1,0 +1,23 @@
+apiVersion: kpt.dev/v1
+kind: Kptfile
+metadata: # kpt-merge: /ran
+  name: ran
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    config.kubernetes.io/local-config: "true"
+    internal.kpt.dev/upstream-identifier: 'kpt.dev|Kptfile|default|ran'
+upstream:
+  type: git
+  git:
+    repo: https://github.com/infinitydon/nephio-aws-packages.git
+    directory: workload-cluster-package-free5gc
+    ref: r3-argocd
+upstreamLock:
+  type: git
+  git:
+    repo: https://github.com/infinitydon/nephio-aws-packages.git
+    directory: workload-cluster-package-free5gc
+    ref: r3-argocd
+    commit: f03897787ca65a4980df9baa24843459b302584a
+info:
+  description: this package is used to deploy workload cluster via FluxCD TF controller
