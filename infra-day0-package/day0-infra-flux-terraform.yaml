@@ -11,7 +11,7 @@ spec:
   outputsSecret: day0-infra-outputs
   credentials:
   - aws:
-      irsa: IRSA_ARN
+      irsa: arn:aws:iam::989405826384:role/mgmt-argocd-terraform-runner
   terraformModule:
     source: https://github.com/infinitydon/eks-infra-terraform.git//tgw-vpc-subnet-nat-terraform?ref=main
   backend: |-
@@ -29,27 +29,27 @@ spec:
     - '*' # The following config affects all task pods
     envFrom:
     - secretRef:
-        name: GITHUB_PAT_CREDENTIALS # kpt-set: ${github-pat-secret-name}
+        name: github-pat-credentials # kpt-set: ${github-pat-secret-name}
     env:
     - name: TF_VAR_github_org
-      value: GITHUB_ORG # kpt-set: ${github-org}
+      value: infinitydon # kpt-set: ${github-org}
     - name: TF_VAR_region
-      value: DEPLOYMENT_REGION # kpt-set: ${deployment-region}
+      value: us-west-2 # kpt-set: ${deployment-region}
     - name: TF_VAR_workload_cluster_region
-      value: DEPLOYMENT_REGION # kpt-set: ${deployment-region}
+      value: us-west-2 # kpt-set: ${deployment-region}
     - name: TF_VAR_ran_az1
-      value: WORKLOAD_RAN_AZ1 # kpt-set: ${workload-ran-az1}
+      value: us-west-2a # kpt-set: ${workload-ran-az1}
     - name: TF_VAR_ran_az2
-      value: WORKLOAD_RAN_AZ2 # kpt-set: ${workload-ran-az2}
+      value: us-west-2b # kpt-set: ${workload-ran-az2}
     - name: TF_VAR_core_controlplane_az1
-      value: WORKLOAD_CORE_CONTROL_PLANE_AZ1 # kpt-set: ${workload-core-controlplane-az1}
+      value: us-west-2a # kpt-set: ${workload-core-controlplane-az1}
     - name: TF_VAR_core_controlplane_az2
-      value: WORKLOAD_CORE_CONTROL_PLANE_AZ2 # kpt-set: ${workload-core-controlplane-az2}
+      value: us-west-2b # kpt-set: ${workload-core-controlplane-az2}
     - name: TF_VAR_core_userplane_az1
-      value: WORKLOAD_CORE_USER_PLANE_AZ1 # kpt-set: ${workload-core-userplane-az1}
+      value: us-west-2a # kpt-set: ${workload-core-userplane-az1}
     - name: TF_VAR_core_userplane_az2
-      value: WORKLOAD_CORE_USER_PLANE_AZ2 # kpt-set: ${workload-core-userplane-az2}
+      value: us-west-2b # kpt-set: ${workload-core-userplane-az2}
     - name: TF_VAR_attach_2nd_eni_lambda_s3_bucket
-      value: MULTUS_LAMBDA_S3_BUCKET # kpt-set: ${multus-lambda-s3-bucket}
+      value: multus-lambda-us-west-2-oregon-2024-argo # kpt-set: ${multus-lambda-s3-bucket}
     - name: TF_VAR_github_repositories
-      value: GITHUB_REPOS # kpt-set: ${github-repos}
+      value: '["argo-telco-ran-5g", "argo-telco-control-plane-5g", "argo-telco-user-plane-5g"]' # kpt-set: ${github-repos}
